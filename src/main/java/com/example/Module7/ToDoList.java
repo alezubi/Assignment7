@@ -1,5 +1,7 @@
 package com.example.Module7;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import java.util.List;
 public class ToDoList {
 
     private final ToDoItemRepository toDoItemRepository;
+    private static final Logger logger = LoggerFactory.getLogger(ToDoList.class);
 
     @Autowired
     public ToDoList(ToDoItemRepository toDoItemRepository) {
@@ -17,19 +20,20 @@ public class ToDoList {
 
     public void addToDoItem(ToDoItem item) {
         toDoItemRepository.save(item);
-        System.out.println("Added: " + item.getTask());
+        logger.info("Added task: {}", item.getTask());
     }
 
     public void deleteToDoItem(Long id) {
         if (toDoItemRepository.existsById(id)) {
             toDoItemRepository.deleteById(id);
-            System.out.println("Deleted item with ID: " + id);
+            logger.info("Deleted task with ID: {}", id);
         } else {
-            System.out.println("Invalid item ID.");
+            logger.warn("Invalid task ID: {}", id);
         }
     }
 
     public List<ToDoItem> getAllToDoItems() {
+        logger.info("Retrieving all tasks");
         return toDoItemRepository.findAll();
     }
 }
