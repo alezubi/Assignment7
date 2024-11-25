@@ -1,14 +1,11 @@
-# Use an OpenJDK image
-FROM openjdk:17-jdk-alpine
+# Use a base image with a servlet container like Tomcat
+FROM tomcat:9.0
 
-# Set the working directory
-WORKDIR /app
+# Copy the WAR file to the webapps directory of Tomcat
+COPY target/demo-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/demo.war
 
-# Copy the JAR or WAR file
-COPY target/demo-0.0.1-SNAPSHOT.war app.war
-
-# Expose the application port
+# Expose the Tomcat port
 EXPOSE 8080
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.war"]
+# Start Tomcat
+CMD ["catalina.sh", "run"]
